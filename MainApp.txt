@@ -1,0 +1,33 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class MainApp {
+
+    public static void main(String[] args) {
+
+        List<Product> products = List.of(
+                new Electronics("E1", "Laptop", 1200),
+                new Clothing("C1", "Jacket", 150),
+                new Grocery("G1", "Milk", 5),
+                new Electronics("E2", "Phone", 800)
+        );
+
+        // Lambda filter (category search)
+        List<Product> electronics = products.stream()
+                .filter(p -> p.getCategory().equals("Electronics"))
+                .collect(Collectors.toList());
+
+        // Sorting using streams
+        List<Product> sortedByPrice = products.stream()
+                .sorted(Comparator.comparingDouble(Product::getPrice))
+                .collect(Collectors.toList());
+
+        Customer customer = new Customer("U1", "john_doe");
+        electronics.forEach(customer::addToCart);
+
+        Order order = new Order(customer.getCart());
+
+        System.out.println("Subtotal: " + order.calculateSubtotal());
+        System.out.println("Total: " + order.calculateTotal(0.1));
+    }
+}
